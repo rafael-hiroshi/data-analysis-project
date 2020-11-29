@@ -38,5 +38,5 @@ dfEstupro = df[df$RUBRICA == 'Estupro',]
 tableSexo <- sort(table(dfEstupro["SEXO_PESSOA"]), decreasing=TRUE)[1:3]
 barplot(tableSexo, space = 0,
         ylab = "Quantidade", xlab="Gênero",
-        main = "Frequência Casos de Estupros em São Paulo (RDO) por Gênero",
+        main = "Frequência Casos de Estupros em São Paulo (RDO) por Sexo",
         border="azure4", col="azure2")

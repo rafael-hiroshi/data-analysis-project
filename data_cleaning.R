@@ -1,6 +1,6 @@
 rdo_database <- read.csv('RDO_3.csv')
-rdo_database["ID_DELEGACIA"] = rdo_database[colnames(rdo_database)[1]]
-rdo_database = rdo_database[!duplicated(rdo_database[c("NUM_BO", "ANO_BO", "ID_DELEGACIA")]), ]
+rdo_database["ID_DELEGACIA"] <- rdo_database[colnames(rdo_database)[1]]
+rdo_database <- rdo_database[!duplicated(rdo_database[c("NUM_BO", "ANO_BO", "ID_DELEGACIA")]), ]
 
 rdo_database$RUBRICA <- as.character(rdo_database$RUBRICA)
 rdo_database$RUBRICA[rdo_database$RUBRICA == 'Furto qualificado (art. 155, §4o.)'] <- 'Furto qualificado'
@@ -59,7 +59,6 @@ rdo_database$COR_CUTIS[
   rdo_database$COR_CUTIS != 'Amarela' &
   rdo_database$COR_CUTIS != 'Branca' &
   rdo_database$COR_CUTIS != 'NULL' & 
-  rdo_database$COR_CUTIS != 'Outros' & 
   rdo_database$COR_CUTIS != 'Parda' & 
   rdo_database$COR_CUTIS != 'Preta' & 
   rdo_database$COR_CUTIS != 'Vermelha'] <- NA
@@ -74,14 +73,22 @@ rdo_database$FAIXA_ETARIA[rdo_database$IDADE_PESSOA >= 0 & rdo_database$IDADE_PE
 rdo_database$FAIXA_ETARIA[rdo_database$IDADE_PESSOA >= 15 & rdo_database$IDADE_PESSOA <= 29] <-"15 a 29 anos"
 rdo_database$FAIXA_ETARIA[rdo_database$IDADE_PESSOA >= 30 & rdo_database$IDADE_PESSOA <= 44] <-"30 a 44 anos"
 rdo_database$FAIXA_ETARIA[rdo_database$IDADE_PESSOA >= 45 & rdo_database$IDADE_PESSOA <= 65] <-"45 a 65 anos"
-rdo_database$FAIXA_ETARIA[rdo_database$IDADE_PESSOA >= 65 & rdo_database$IDADE_PESSOA < 130] <-"Acima de 65 anos"
+rdo_database$FAIXA_ETARIA[rdo_database$IDADE_PESSOA > 65 & rdo_database$IDADE_PESSOA <= 130] <-"Acima de 65 anos"
 rdo_database$FAIXA_ETARIA[rdo_database$IDADE_PESSOA < 0 ] <-"Indefinido"
 
 rdo_database$FAIXA_ETARIA_DESCRICAO[!is.integer(rdo_database$IDADE_PESSOA)] <-"Indefinido"
 rdo_database$FAIXA_ETARIA_DESCRICAO[rdo_database$IDADE_PESSOA <= 14] <-"Criança"
 rdo_database$FAIXA_ETARIA_DESCRICAO[rdo_database$IDADE_PESSOA >= 15 & rdo_database$IDADE_PESSOA <= 24] <-"Jovem"
 rdo_database$FAIXA_ETARIA_DESCRICAO[rdo_database$IDADE_PESSOA >= 25 & rdo_database$IDADE_PESSOA <= 64] <-"Adulto"
-rdo_database$FAIXA_ETARIA_DESCRICAO[rdo_database$IDADE_PESSOA >= 65 & rdo_database$IDADE_PESSOA < 130] <-"Idoso"
+rdo_database$FAIXA_ETARIA_DESCRICAO[rdo_database$IDADE_PESSOA > 65 & rdo_database$IDADE_PESSOA <= 130] <-"Idoso"
 rdo_database$FAIXA_ETARIA_DESCRICAO[rdo_database$IDADE_PESSOA < 0 ] <-"Indefinido"
+
+rdo_database$LATITUDE[rdo_database$LATITUDE == 'NULL'] <- NA
+rdo_database$LONGITUDE[rdo_database$LONGITUDE == 'NULL'] <- NA
+rdo_database$LATITUDE <- as.numeric(as.character(rdo_database$LATITUDE))
+rdo_database$LONGITUDE <- as.numeric(as.character(rdo_database$LONGITUDE))
+rdo_database$LATITUDE[!is.numeric(rdo_database$LATITUDE)] <- NA
+rdo_database$LONGITUDE[!is.numeric(rdo_database$LONGITUDE)] <- NA
+rdo_database$LATITUDE[rdo_database$LATITUDE >= 0] <- NA
 
 write.csv(rdo_database,"RDO_3_v2.csv", row.names = FALSE)

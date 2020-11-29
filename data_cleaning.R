@@ -53,7 +53,7 @@ rdo_database$PERIODO_DESCRICAO[rdo_database$HORA >= 6 & rdo_database$HORA < 12] 
 rdo_database$PERIODO_DESCRICAO[rdo_database$HORA >= 12 & rdo_database$HORA < 18] <-"Vespertino"
 rdo_database$PERIODO_DESCRICAO[rdo_database$HORA >= 18 & rdo_database$HORA < 24] <-"Noturno"
 rdo_database$PERIODO_DESCRICAO[rdo_database$HORA >= 0 & rdo_database$HORA < 6] <-"Madrugada"
-rdo_database$PERIODO[is.na(rdo_database$HORA)] <-"Indefinido"
+rdo_database$PERIODO_DESCRICAO[is.na(rdo_database$HORA)] <-"Indefinido"
 
 rdo_database$COR_CUTIS[
   rdo_database$COR_CUTIS != 'Amarela' &
@@ -67,7 +67,21 @@ rdo_database$COR_CUTIS[
 rdo_database$COR_CUTIS[rdo_database$COR_CUTIS == 'NULL'] <- NA
 
 rdo_database$SEXO_PESSOA[rdo_database$SEXO_PESSOA == 'NULL'] <- NA
+rdo_database$SEXO_PESSOA[rdo_database$SEXO_PESSOA == 'I'] <- NA
+
+rdo_database$FAIXA_ETARIA[!is.integer(rdo_database$IDADE_PESSOA)] <-"Indefinido"
+rdo_database$FAIXA_ETARIA[rdo_database$IDADE_PESSOA >= 0 & rdo_database$IDADE_PESSOA <= 14] <-"0 a 14 anos"
+rdo_database$FAIXA_ETARIA[rdo_database$IDADE_PESSOA >= 15 & rdo_database$IDADE_PESSOA <= 29] <-"15 a 29 anos"
+rdo_database$FAIXA_ETARIA[rdo_database$IDADE_PESSOA >= 30 & rdo_database$IDADE_PESSOA <= 44] <-"30 a 44 anos"
+rdo_database$FAIXA_ETARIA[rdo_database$IDADE_PESSOA >= 45 & rdo_database$IDADE_PESSOA <= 65] <-"45 a 65 anos"
+rdo_database$FAIXA_ETARIA[rdo_database$IDADE_PESSOA >= 65 & rdo_database$IDADE_PESSOA < 130] <-"Acima de 65 anos"
+rdo_database$FAIXA_ETARIA[rdo_database$IDADE_PESSOA < 0 ] <-"Indefinido"
+
+rdo_database$FAIXA_ETARIA_DESCRICAO[!is.integer(rdo_database$IDADE_PESSOA)] <-"Indefinido"
+rdo_database$FAIXA_ETARIA_DESCRICAO[rdo_database$IDADE_PESSOA <= 14] <-"Criança"
+rdo_database$FAIXA_ETARIA_DESCRICAO[rdo_database$IDADE_PESSOA >= 15 & rdo_database$IDADE_PESSOA <= 24] <-"Jovem"
+rdo_database$FAIXA_ETARIA_DESCRICAO[rdo_database$IDADE_PESSOA >= 25 & rdo_database$IDADE_PESSOA <= 64] <-"Adulto"
+rdo_database$FAIXA_ETARIA_DESCRICAO[rdo_database$IDADE_PESSOA >= 65 & rdo_database$IDADE_PESSOA < 130] <-"Idoso"
+rdo_database$FAIXA_ETARIA_DESCRICAO[rdo_database$IDADE_PESSOA < 0 ] <-"Indefinido"
 
 write.csv(rdo_database,"RDO_3_v2.csv", row.names = FALSE)
-
-

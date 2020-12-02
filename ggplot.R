@@ -58,8 +58,8 @@ df_sexo <- df[!is.na(df$SEXO_PESSOA) & !is.na(df$COR_CUTIS) , ]
 ggplot(df_sexo, aes(x = COR_CUTIS)) + 
   geom_bar(na.rm = TRUE) +
   theme_linedraw() + 
-  ggtitle("Quantidade dos Principais Crimes em São Paulo por Sexo (RDO)") +
-  labs(x = "Sexo", y = "Quantidade") +
+  ggtitle("Quantidade de Crimes em São Paulo por Cor e Sexo(RDO)") +
+  labs(x = "Cor", y = "Quantidade") +
   text_theme +
   facet_wrap(~SEXO_PESSOA)
 

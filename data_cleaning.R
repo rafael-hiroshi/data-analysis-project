@@ -68,20 +68,20 @@ rdo_database$COR_CUTIS[rdo_database$COR_CUTIS == 'NULL'] <- NA
 rdo_database$SEXO_PESSOA[rdo_database$SEXO_PESSOA == 'NULL'] <- NA
 rdo_database$SEXO_PESSOA[rdo_database$SEXO_PESSOA == 'I'] <- NA
 
-rdo_database$FAIXA_ETARIA[!is.integer(rdo_database$IDADE_PESSOA)] <-"Indefinido"
-rdo_database$FAIXA_ETARIA[rdo_database$IDADE_PESSOA >= 0 & rdo_database$IDADE_PESSOA <= 14] <-"0 a 14 anos"
-rdo_database$FAIXA_ETARIA[rdo_database$IDADE_PESSOA >= 15 & rdo_database$IDADE_PESSOA <= 29] <-"15 a 29 anos"
-rdo_database$FAIXA_ETARIA[rdo_database$IDADE_PESSOA >= 30 & rdo_database$IDADE_PESSOA <= 44] <-"30 a 44 anos"
-rdo_database$FAIXA_ETARIA[rdo_database$IDADE_PESSOA >= 45 & rdo_database$IDADE_PESSOA <= 65] <-"45 a 65 anos"
-rdo_database$FAIXA_ETARIA[rdo_database$IDADE_PESSOA > 65 & rdo_database$IDADE_PESSOA <= 130] <-"Acima de 65 anos"
-rdo_database$FAIXA_ETARIA[rdo_database$IDADE_PESSOA < 0 ] <-"Indefinido"
+rdo_database$FAIXA_ETARIA[!is.integer(rdo_database$IDADE_PESSOA)] <-"N/D"
+rdo_database$FAIXA_ETARIA[rdo_database$IDADE_PESSOA < 0 ] <-"N/D"
+rdo_database$FAIXA_ETARIA[rdo_database$IDADE_PESSOA >= 0 & rdo_database$IDADE_PESSOA <= 14] <-"0 a 14"
+rdo_database$FAIXA_ETARIA[rdo_database$IDADE_PESSOA >= 15 & rdo_database$IDADE_PESSOA <= 29] <-"15 a 29"
+rdo_database$FAIXA_ETARIA[rdo_database$IDADE_PESSOA >= 30 & rdo_database$IDADE_PESSOA <= 44] <-"30 a 44"
+rdo_database$FAIXA_ETARIA[rdo_database$IDADE_PESSOA >= 45 & rdo_database$IDADE_PESSOA <= 65] <-"45 a 65"
+rdo_database$FAIXA_ETARIA[rdo_database$IDADE_PESSOA > 65] <- "Acima de 65"
 
 rdo_database$FAIXA_ETARIA_DESCRICAO[!is.integer(rdo_database$IDADE_PESSOA)] <-"Indefinido"
+rdo_database$FAIXA_ETARIA_DESCRICAO[rdo_database$IDADE_PESSOA < 0 ] <-"Indefinido"
 rdo_database$FAIXA_ETARIA_DESCRICAO[rdo_database$IDADE_PESSOA <= 14] <-"Criança"
 rdo_database$FAIXA_ETARIA_DESCRICAO[rdo_database$IDADE_PESSOA >= 15 & rdo_database$IDADE_PESSOA <= 24] <-"Jovem"
 rdo_database$FAIXA_ETARIA_DESCRICAO[rdo_database$IDADE_PESSOA >= 25 & rdo_database$IDADE_PESSOA <= 64] <-"Adulto"
-rdo_database$FAIXA_ETARIA_DESCRICAO[rdo_database$IDADE_PESSOA > 65 & rdo_database$IDADE_PESSOA <= 130] <-"Idoso"
-rdo_database$FAIXA_ETARIA_DESCRICAO[rdo_database$IDADE_PESSOA < 0 ] <-"Indefinido"
+rdo_database$FAIXA_ETARIA_DESCRICAO[rdo_database$IDADE_PESSOA > 65] <-"Idoso"
 
 rdo_database$LATITUDE[rdo_database$LATITUDE == 'NULL'] <- NA
 rdo_database$LONGITUDE[rdo_database$LONGITUDE == 'NULL'] <- NA
@@ -91,4 +91,23 @@ rdo_database$LATITUDE[!is.numeric(rdo_database$LATITUDE)] <- NA
 rdo_database$LONGITUDE[!is.numeric(rdo_database$LONGITUDE)] <- NA
 rdo_database$LATITUDE[rdo_database$LATITUDE >= 0] <- NA
 
+rdo_principal <- rdo_database[
+  rdo_database$RUBRICA == 'Roubo' |
+  rdo_database$RUBRICA == 'Furto' |
+  rdo_database$RUBRICA == 'Lesão corporal'|
+  rdo_database$RUBRICA == 'Furto qualificado' |
+  rdo_database$RUBRICA == 'Lesão corporal culposa na direção de veículo automotor'
+  ,]
+
+rdo_outros <- rdo_database[
+  rdo_database$RUBRICA != 'Roubo' &
+    rdo_database$RUBRICA != 'Furto' &
+    rdo_database$RUBRICA != 'Lesão corporal'&
+    rdo_database$RUBRICA != 'Furto qualificado' &
+    rdo_database$RUBRICA != 'Lesão corporal culposa na direção de veículo automotor'
+  ,]
+
 write.csv(rdo_database,"RDO_3_v2.csv", row.names = FALSE)
+write.csv(rdo_principal,"RDO_principais_crimes.csv", row.names = FALSE)
+write.csv(rdo_outros,"RDO_outros", row.names = FALSE)
+

@@ -1,5 +1,4 @@
 detach("package:dplyr", unload=TRUE)
-library(plyr)
 library(dplyr)
 library(ggplot2)
 library(ggmap)
@@ -20,7 +19,10 @@ map <- get_stamenmap(coord_map, zoom = 10, maptype = "toner-lite")
 ggmap(map) +
   geom_point(data = df_locations, mapping = aes(x = LONGITUDE, y = LATITUDE))
 
-violent_crimes <- subset(df_locations, RUBRICA == "Furto de coisa comum")
+
+violent_crimes <- subset(df_locations, RUBRICA == "Homicídio simples" & !is.na(SEXO_PESSOA))
+
+df_locations %>% count(RUBRICA, sort=TRUE)
 
 height <- max(violent_crimes$LATITUDE) - min(violent_crimes$LATITUDE)
 width <- max(violent_crimes$LONGITUDE) - min(violent_crimes$LONGITUDE)
@@ -30,4 +32,4 @@ coord_map <- c(bottom  = min(violent_crimes$LATITUDE)  - 0.1 * height,
                right   = max(violent_crimes$LONGITUDE) + 0.1 * width)
 map <- get_stamenmap(coord_map, zoom = 10, maptype = "toner-lite")
 
-ggmap(map) + geom_point(aes(x = LONGITUDE, y = LATITUDE, colour = RUBRICA, size = RUBRICA),data = violent_crimes)
+ggmap(map) + geom_point(aes(x = LONGITUDE, y = LATITUDE, color = DESCR_TIPOLOCAL, fill=RUBRICA),data = violent_crimes)
